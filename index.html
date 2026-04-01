@@ -29,6 +29,7 @@
       <ul class="nav-links">
         <li><a href="#scanner">Scanner</a></li>
         <li><a href="#comment-ca-marche">Comment ça marche</a></li>
+        <li><a href="marques.html">Marques</a></li>
         <li><a href="#about">À propos</a></li>
       </ul>
       <button class="nav-cta" onclick="document.getElementById('scanner').scrollIntoView({behavior:'smooth'})">
@@ -310,29 +311,120 @@
     </div>
   </section>
 
+  <!-- ============================================================
+       SECTION À PROPOS — enrichie avec le concept du projet
+  ============================================================ -->
   <section class="about-section" id="about">
-    <div class="container about-grid">
-      <div class="about-text">
-        <span class="section-tag">Notre mission</span>
-        <h2 class="section-title">La transparence<br/><em>au service</em> de la planète</h2>
-        <p>L'industrie textile est responsable de <strong>10% des émissions mondiales de CO₂</strong>. EcoTag vous donne les outils pour choisir avec conscience.</p>
-        <p>Nous analysons chaque produit selon plus de <strong>20 critères environnementaux</strong> : émissions carbone, eau, produits chimiques, conditions de fabrication et recyclabilité.</p>
-        <div class="about-badges">
-          <span class="about-badge">🌱 100% indépendant</span>
-          <span class="about-badge">🔬 Données vérifiées</span>
-          <span class="about-badge">🌍 Open Data</span>
-        </div>
-      </div>
-      <div class="about-visual">
-        <div class="about-circle">
-          <div class="circle-inner">
-            <span class="circle-emoji">🌍</span>
-            <span class="circle-text">Mode<br/>Durable</span>
+    <div class="container">
+
+      <!-- Bloc principal : mission + visuel -->
+      <div class="about-grid">
+        <div class="about-text">
+          <span class="section-tag">Notre mission</span>
+          <h2 class="section-title">La transparence<br/><em>au service</em> de la planète</h2>
+          <p>L'industrie textile est responsable de <strong>10% des émissions mondiales de CO₂</strong> et consomme chaque année plus d'eau que n'importe quel autre secteur industriel. Pourtant, au moment d'acheter un vêtement, le consommateur n'a accès à aucune information environnementale claire.</p>
+          <p><strong>EcoTag est né de ce constat.</strong> Notre objectif : rendre l'impact écologique de chaque vêtement aussi visible et lisible que son prix. En un simple scan, vous savez.</p>
+          <div class="about-badges">
+            <span class="about-badge">🌱 100% indépendant</span>
+            <span class="about-badge">🔬 Données vérifiées</span>
+            <span class="about-badge">🌍 Open Data</span>
           </div>
         </div>
-        <div class="about-fact fact-1"><strong>2 700 L</strong><span>d'eau pour un t-shirt</span></div>
-        <div class="about-fact fact-2"><strong>10%</strong><span>des émissions CO₂ mondiales</span></div>
+        <div class="about-visual">
+          <div class="about-circle">
+            <div class="circle-inner">
+              <span class="circle-emoji">🌍</span>
+              <span class="circle-text">Mode<br/>Durable</span>
+            </div>
+          </div>
+          <div class="about-fact fact-1"><strong>2 700 L</strong><span>d'eau pour un t-shirt</span></div>
+          <div class="about-fact fact-2"><strong>10%</strong><span>des émissions CO₂ mondiales</span></div>
+        </div>
       </div>
+
+      <!-- Bloc concept : pourquoi EcoTag -->
+      <div class="about-concept">
+        <div class="concept-header">
+          <span class="section-tag">Le concept</span>
+          <h3 class="concept-title">Pourquoi EcoTag ?</h3>
+          <p class="concept-intro">La mode est la 2e industrie la plus polluante au monde. Nous pensons que chaque achat compte — et qu'informer, c'est déjà agir.</p>
+        </div>
+        <div class="concept-cards">
+          <div class="concept-card">
+            <div class="concept-icon">🏷️</div>
+            <h4>Le problème</h4>
+            <p>Les étiquettes des vêtements indiquent la composition et le pays de fabrication, mais <strong>aucun impact environnemental</strong>. Le consommateur est laissé dans l'opacité totale face aux enjeux du fast fashion et de la surproduction textile.</p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-icon">💡</div>
+            <h4>Notre solution</h4>
+            <p>EcoTag traduit le code-barres de n'importe quel vêtement en <strong>données environnementales concrètes</strong> : kg de CO₂ émis, litres d'eau consommés, niveau de produits chimiques, taux de recyclabilité et score global sur 100.</p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-icon">🎯</div>
+            <h4>Notre ambition</h4>
+            <p>Devenir le <strong>Yuka de la mode</strong> : l'outil de référence que chaque consommateur sort en magasin avant d'acheter. Un geste simple qui, répété des millions de fois, crée une pression positive sur les marques.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloc méthodologie -->
+      <div class="about-method">
+        <div class="method-header">
+          <span class="section-tag">Méthodologie</span>
+          <h3 class="concept-title">Comment on calcule le score ?</h3>
+        </div>
+        <div class="method-grid">
+          <div class="method-item">
+            <div class="method-number">20+</div>
+            <div class="method-label">critères analysés</div>
+            <p>Matières premières, procédés de teinture, conditions de fabrication, distance de transport, durabilité du produit et options de recyclage.</p>
+          </div>
+          <div class="method-item">
+            <div class="method-number">5</div>
+            <div class="method-label">grades de A à E</div>
+            <p>Un système de notation clair, inspiré du Nutri-Score alimentaire, pour comparer rapidement les produits et les marques entre eux.</p>
+          </div>
+          <div class="method-item">
+            <div class="method-number">50k+</div>
+            <div class="method-label">produits référencés</div>
+            <p>Une base de données enrichie en continu, croisée avec les données des marques, les certifications tierces et les études scientifiques de référence.</p>
+          </div>
+          <div class="method-item">
+            <div class="method-number">0</div>
+            <div class="method-label">partenariat commercial</div>
+            <p>EcoTag est 100% indépendant. Aucune marque ne peut payer pour améliorer son score. Nos données sont vérifiées par des tiers et basées sur des sources ouvertes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloc valeurs -->
+      <div class="about-values">
+        <span class="section-tag">Nos valeurs</span>
+        <div class="values-grid">
+          <div class="value-card">
+            <span class="value-icon">🔍</span>
+            <h4>Transparence</h4>
+            <p>Nos sources, notre méthodologie et nos calculs sont publics et accessibles à tous.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">⚖️</span>
+            <h4>Indépendance</h4>
+            <p>Aucun conflit d'intérêt. Nous ne recevons aucun financement des marques que nous évaluons.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">🤝</span>
+            <h4>Accessibilité</h4>
+            <p>L'information environnementale doit être gratuite, simple et disponible pour tous.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">🌱</span>
+            <h4>Impact réel</h4>
+            <p>Notre objectif n'est pas de culpabiliser, mais d'encourager des choix progressivement plus durables.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -350,6 +442,7 @@
         <ul>
           <li><a href="#scanner">Scanner</a></li>
           <li><a href="#comment-ca-marche">Comment ça marche</a></li>
+          <li><a href="marques.html">Marques</a></li>
           <li><a href="#about">À propos</a></li>
         </ul>
       </div>
@@ -366,7 +459,4 @@
       <p>© 2025 EcoTag — Pour une mode éco-responsable 🌿</p>
     </div>
   </footer>
-
-  <script src="app.js"></script>
-</body>
 </html>

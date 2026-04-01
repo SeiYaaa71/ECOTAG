@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoTag — Marques</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-50:  #f0faf4;
+      --green-100: #d4f0df;
+      --green-400: #4ade80;
+      --green-600: #16a34a;
+      --green-700: #15803d;
+      --green-800: #166534;
+      --green-900: #14532d;
+      --amber-400: #fbbf24;
+      --amber-600: #d97706;
+      --red-400:   #f87171;
+      --red-600:   #dc2626;
+      --gray-50:   #f9fafb;
+      --gray-100:  #f3f4f6;
+      --gray-200:  #e5e7eb;
+      --gray-400:  #9ca3af;
+      --gray-600:  #4b5563;
+      --gray-800:  #1f2937;
+      --bg: #fafaf8;
+      --text: #1a1a18;
+      --text-muted: #5a5a56;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,250,248,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .nav {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 2rem;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-weight: 600; font-size: 1.15rem; }
+    .logo strong { color: var(--green-700); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.9rem; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--green-700); }
+    .nav-cta {
+      background: var(--green-700); color: #fff;
+      border: none; border-radius: var(--radius-md);
+      padding: 0.5rem 1.2rem; font-size: 0.875rem; font-family: inherit; font-weight: 500;
+      cursor: pointer; transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--green-800); }
+
+    /* ── PAGE HEADER ── */
+    .page-hero {
+      background: linear-gradient(135deg, var(--green-50) 0%, #fff 60%);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 3.5rem 2rem 3rem;
+      text-align: center;
+    }
+    .page-hero .tag {
+      display: inline-block;
+      background: var(--green-100); color: var(--green-800);
+      font-size: 0.78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 99px; margin-bottom: 1.2rem;
+    }
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .page-hero h1 em { font-style: italic; color: var(--green-700); }
+    .page-hero p { color: var(--text-muted); max-width: 560px; margin: 0 auto 2rem; line-height: 1.7; }
+
+    /* ── SEARCH / FILTER ── */
+    .controls {
+      max-width: 1200px; margin: 2.5rem auto 0;
+      padding: 0 2rem;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+    }
+    .search-box {
+      flex: 1; min-width: 220px;
+      display: flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md); padding: 0 1rem; height: 44px;
+    }
+    .search-box input {
+      border: none; outline: none; font-family: inherit; font-size: 0.9rem;
+      background: transparent; flex: 1; color: var(--text);
+    }
+    .search-box input::placeholder { color: var(--gray-400); }
+    .search-icon { color: var(--gray-400); font-size: 0.95rem; }
+
+    .filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill {
+      padding: 6px 14px; border-radius: 99px; border: 1px solid var(--gray-200);
+      font-size: 0.82rem; font-weight: 500; background: #fff; cursor: pointer;
+      transition: all .2s; color: var(--text-muted);
+    }
+    .pill:hover { border-color: var(--green-600); color: var(--green-700); }
+    .pill.active { background: var(--green-700); color: #fff; border-color: var(--green-700); }
+
+    .sort-select {
+      height: 44px; padding: 0 1rem; border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md); font-family: inherit; font-size: 0.875rem;
+      background: #fff; color: var(--text); cursor: pointer; outline: none;
+    }
+    .sort-select:focus { border-color: var(--green-600); }
+
+    .results-count {
+      max-width: 1200px; margin: 1rem auto 0; padding: 0 2rem;
+      font-size: 0.82rem; color: var(--text-muted);
+    }
+
+    /* ── GRID ── */
+    .brands-grid {
+      max-width: 1200px; margin: 1.5rem auto 4rem;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* ── BRAND CARD ── */
+    .brand-card {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+    }
+    .brand-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,.07);
+    }
+
+    .card-top {
+      padding: 1.4rem 1.5rem 1rem;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+    }
+    .brand-identity { display: flex; align-items: center; gap: 12px; }
+    .brand-logo-circle {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; font-weight: 700; flex-shrink: 0;
+    }
+    .brand-name { font-size: 1.05rem; font-weight: 600; }
+    .brand-category { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* Score ring (small) */
+    .score-ring { position: relative; width: 56px; height: 56px; flex-shrink: 0; }
+    .score-ring svg { width: 56px; height: 56px; transform: rotate(-90deg); }
+    .score-ring .track { fill: none; stroke: var(--gray-100); stroke-width: 5; }
+    .score-ring .fill  { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+    .score-ring .score-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .score-ring .score-num { font-size: 0.95rem; font-weight: 700; }
+    .score-ring .score-sub { font-size: 0.6rem; color: var(--text-muted); }
+
+    /* Grade badge */
+    .grade-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 99px;
+      font-size: 0.78rem; font-weight: 600; margin: 0 1.5rem .9rem;
+    }
+    .grade-badge.A { background: #dcfce7; color: #166534; }
+    .grade-badge.B { background: #d1fae5; color: #065f46; }
+    .grade-badge.C { background: #fef9c3; color: #854d0e; }
+    .grade-badge.D { background: #fee2e2; color: #991b1b; }
+    .grade-badge.E { background: #fce7f3; color: #9d174d; }
+
+    /* Metrics row */
+    .card-metrics {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--gray-100);
+    }
+    .metric-cell {
+      padding: .8rem .6rem; text-align: center;
+      border-right: 1px solid var(--gray-100);
+    }
+    .metric-cell:last-child { border-right: none; }
+    .metric-cell .m-val { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .metric-cell .m-lbl { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* Progress bars */
+    .card-bars { padding: .8rem 1.5rem 1.2rem; display: flex; flex-direction: column; gap: 8px; }
+    .bar-row { display: flex; align-items: center; gap: 10px; }
+    .bar-label { font-size: 0.75rem; color: var(--text-muted); width: 74px; flex-shrink: 0; }
+    .bar-track { flex: 1; height: 5px; background: var(--gray-100); border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; transition: width 1s ease; }
+    .bar-val { font-size: 0.75rem; font-weight: 500; width: 28px; text-align: right; flex-shrink: 0; }
+
+    /* Card footer */
+    .card-footer {
+      padding: .6rem 1.5rem 1.2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .certifs { display: flex; flex-wrap: wrap; gap: 4px; }
+    .certif-chip {
+      background: var(--gray-100); color: var(--gray-600);
+      font-size: 0.7rem; padding: 2px 8px; border-radius: 99px;
+    }
+    .detail-btn {
+      background: none; border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md); padding: 5px 12px;
+      font-size: 0.78rem; font-family: inherit; cursor: pointer;
+      color: var(--text-muted); transition: all .2s;
+    }
+    .detail-btn:hover { border-color: var(--green-600); color: var(--green-700); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      z-index: 200; display: flex; align-items: center; justify-content: center;
+      padding: 1rem; opacity: 0; pointer-events: none; transition: opacity .25s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: #fff; border-radius: var(--radius-xl);
+      max-width: 600px; width: 100%; max-height: 90vh;
+      overflow-y: auto; transform: translateY(20px); transition: transform .25s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 1.75rem; border-bottom: 1px solid var(--gray-200);
+      position: sticky; top: 0; background: #fff; z-index: 1;
+    }
+    .modal-header h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; }
+    .modal-close {
+      background: var(--gray-100); border: none; border-radius: 50%;
+      width: 34px; height: 34px; font-size: 1rem; cursor: pointer; color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-body { padding: 1.5rem 1.75rem; }
+    .modal-section { margin-bottom: 1.5rem; }
+    .modal-section h3 {
+      font-size: 0.8rem; font-weight: 600; letter-spacing: .05em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: .75rem;
+    }
+    .modal-section p { font-size: 0.9rem; line-height: 1.7; color: var(--text); }
+    .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .modal-metric {
+      background: var(--gray-50); border-radius: var(--radius-md);
+      padding: 1rem; text-align: center;
+    }
+    .modal-metric .mm-val { font-size: 1.3rem; font-weight: 700; color: var(--green-700); }
+    .modal-metric .mm-lbl { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .timeline { list-style: none; }
+    .timeline li { display: flex; gap: 12px; padding: .5rem 0; font-size: 0.875rem; }
+    .timeline li::before {
+      content: ''; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green-600); flex-shrink: 0; margin-top: 5px;
+    }
+    .timeline li.bad::before { background: var(--red-400); }
+    .modal-cta {
+      margin-top: 1.5rem;
+      background: var(--green-700); color: #fff;
+      border: none; border-radius: var(--radius-md); padding: .75rem 1.5rem;
+      font-family: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer;
+      width: 100%; transition: background .2s;
+    }
+    .modal-cta:hover { background: var(--green-800); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      grid-column: 1/-1; text-align: center;
+      padding: 4rem 2rem; color: var(--text-muted);
+    }
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+    /* ── FOOTER ── */
+    .footer { background: #fff; border-top: 1px solid var(--gray-200); padding: 2rem; text-align: center; }
+    .footer p { font-size: 0.83rem; color: var(--text-muted); }
+
+    @media (max-width: 640px) {
+      .nav-links, .nav-cta { display: none; }
+      .brands-grid { grid-template-columns: 1fr; }
+      .modal-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <nav class="nav">
+    <a href="index.html" class="logo">
+      <span>🌿</span>
+      <span>Eco<strong>Tag</strong></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#scanner">Scanner</a></li>
+      <li><a href="index.html#comment-ca-marche">Comment ça marche</a></li>
+      <li><a href="marques.html" class="active">Marques</a></li>
+      <li><a href="index.html#about">À propos</a></li>
+    </ul>
+    <button class="nav-cta" onclick="window.location='index.html#scanner'">Scanner maintenant</button>
+  </nav>
+</header>
+
+<!-- ── PAGE HERO ── -->
+<section class="page-hero">
+  <span class="tag">Annuaire</span>
+  <h1>Les marques de mode<br/><em>passées au crible</em></h1>
+  <p>Découvrez le score éco-responsable de vos marques préférées : fast fashion, premium, sport et bien plus.</p>
+</section>
+
+<!-- ── CONTROLS ── -->
+<div class="controls">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search-input" placeholder="Rechercher une marque…" oninput="filterBrands()" />
+  </div>
+  <div class="filter-pills" id="filter-pills">
+    <button class="pill active" data-cat="all" onclick="setFilter(this,'all')">Toutes</button>
+    <button class="pill" data-cat="Fast Fashion" onclick="setFilter(this,'Fast Fashion')">Fast Fashion</button>
+    <button class="pill" data-cat="Premium" onclick="setFilter(this,'Premium')">Premium</button>
+    <button class="pill" data-cat="Sport" onclick="setFilter(this,'Sport')">Sport</button>
+    <button class="pill" data-cat="Écoresponsable" onclick="setFilter(this,'Écoresponsable')">Écoresponsable</button>
+    <button class="pill" data-cat="Luxe" onclick="setFilter(this,'Luxe')">Luxe</button>
+  </div>
+  <select class="sort-select" id="sort-select" onchange="filterBrands()">
+    <option value="score-desc">Meilleur score</option>
+    <option value="score-asc">Moins bon score</option>
+    <option value="az">A → Z</option>
+    <option value="za">Z → A</option>
+  </select>
+</div>
+<p class="results-count" id="results-count"></p>
+
+<!-- ── BRANDS GRID ── -->
+<div class="brands-grid" id="brands-grid"></div>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <p>© 2025 EcoTag — Pour une mode éco-responsable 🌿</p>
+</footer>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <h2 id="modal-title">—</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const BRANDS = [
+  {
+    id: 1,
+    name: "Zara",
+    category: "Fast Fashion",
+    color: "#1a1a18", bg: "#f3f4f6",
+    initials: "ZA",
+    score: 32,
+    grade: "D",
+    co2: "4.8", water: "2 700", chemicals: "Élevé", recyclability: "14%",
+    bars: { matériaux: 28, production: 35, transport: 40, transparence: 22 },
+    certs: ["ZDHC partiel"],
+    desc: "Zara (Inditex) est le géant mondial du fast fashion. Malgré des engagements récents via sa ligne « Join Life », la majorité des collections restent peu durables, avec une production rapide et une durée de vie courte des vêtements.",
+    positives: ["Programme Join Life sur certaines pièces", "Objectif 100% coton durable en 2025", "Collecte vêtements en magasin"],
+    negatives: ["Renouvellement de collections très rapide (~20 collections/an)", "Majorité des usines en Asie du Sud-Est", "Peu de traçabilité matières"],
+    metrics_extra: { "Collections/an": "~20", "Pays de prod.": "50+", "Emplois": "150 000+", "CA (Mds€)": "25.6" }
+  },
+  {
+    id: 2,
+    name: "H&M",
+    category: "Fast Fashion",
+    color: "#cc0000", bg: "#fee2e2",
+    initials: "HM",
+    score: 38,
+    grade: "D",
+    co2: "4.2", water: "2 400", chemicals: "Élevé", recyclability: "19%",
+    bars: { matériaux: 42, production: 30, transport: 38, transparence: 41 },
+    certs: ["Better Cotton", "Organic Cotton partiel"],
+    desc: "H&M a engagé des démarches de durabilité visibles (ligne Conscious, collecte de vêtements) mais reste sous le feu des critiques pour greenwashing. La transparence de la chaîne d'approvisionnement s'améliore progressivement.",
+    positives: ["Programme de collecte H&M Rewear", "Ligne Conscious avec matières recyclées", "Rapport durabilité annuel détaillé"],
+    negatives: ["Accusations de greenwashing par le Parlement européen", "Faible part de matières durables (~30%)", "Surproduction structurelle"],
+    metrics_extra: { "Collections/an": "12-16", "Pays de prod.": "30+", "Emplois": "155 000", "CA (Mds€)": "22.1" }
+  },
+  {
+    id: 3,
+    name: "Bershka",
+    category: "Fast Fashion",
+    color: "#6d28d9", bg: "#ede9fe",
+    initials: "BS",
+    score: 26,
+    grade: "E",
+    co2: "5.1", water: "3 100", chemicals: "Très élevé", recyclability: "8%",
+    bars: { matériaux: 20, production: 25, transport: 35, transparence: 18 },
+    certs: [],
+    desc: "Bershka, filiale d'Inditex ciblant les 15-25 ans, affiche l'un des plus mauvais scores de notre classement. La marque mise sur des prix très bas et un renouvellement ultra-rapide, avec peu d'engagements environnementaux visibles.",
+    positives: ["Appartient à Inditex qui a des engagements groupe"],
+    negatives: ["Pas de ligne écoresponsable dédiée", "Très faible transparence fournisseurs", "Matières synthétiques largement dominantes", "Prix très bas favorisant la surconsommation"],
+    metrics_extra: { "Collections/an": "24+", "Pays de prod.": "40+", "Boutiques": "1 100+", "CA (Mds€)": "2.1" }
+  },
+  {
+    id: 4,
+    name: "Adidas",
+    category: "Sport",
+    color: "#000", bg: "#f1f5f9",
+    initials: "AD",
+    score: 61,
+    grade: "B",
+    co2: "2.1", water: "1 400", chemicals: "Modéré", recyclability: "52%",
+    bars: { matériaux: 65, production: 58, transport: 60, transparence: 62 },
+    certs: ["Better Cotton", "GOTS partiel", "bluesign®"],
+    desc: "Adidas est l'un des leaders du sport en matière de durabilité. Le partenariat avec Parley for the Oceans (plastique recyclé des océans) et la Stan Smith Mylo (champignons) illustrent une vraie stratégie d'innovation durable.",
+    positives: ["Collaboration Parley : plastique océan recyclé", "Objectif 9 Mds de plastique recyclé évité d'ici 2025", "Programme End Plastic Waste", "Transparence chaîne d'approvisionnement"],
+    negatives: ["Polyester vierge encore très utilisé", "Volumes de production très élevés", "Logistique internationale énergivore"],
+    metrics_extra: { "% polyester recyclé": "69%", "Pays de prod.": "55", "Emplois": "60 000", "CA (Mds€)": "21.4" }
+  },
+  {
+    id: 5,
+    name: "Nike",
+    category: "Sport",
+    color: "#f97316", bg: "#fff7ed",
+    initials: "NK",
+    score: 55,
+    grade: "C",
+    co2: "2.6", water: "1 700", chemicals: "Modéré", recyclability: "44%",
+    bars: { matériaux: 58, production: 50, transport: 55, transparence: 54 },
+    certs: ["Organic Cotton", "Recycled Polyester"],
+    desc: "Nike (Move to Zero) affiche des ambitions zéro carbone et zéro déchet. La ligne Space Hippie utilise des déchets de fabrication recyclés. La marque reste sous pression pour ses conditions de travail dans les usines sous-traitantes.",
+    positives: ["Programme Move to Zero ambitieux", "Nike Refurbished : remise en état de chaussures", "Ligne Space Hippie (déchets recyclés)", "Reporting ESG détaillé"],
+    negatives: ["Controverses conditions de travail Asie du Sud-Est", "Polyester vierge encore dominant", "Empreinte carbone totale très élevée (taille du groupe)"],
+    metrics_extra: { "% matières durables": "54%", "Pays de prod.": "40+", "Emplois": "79 000", "CA (Mds$)": "51.4" }
+  },
+  {
+    id: 6,
+    name: "Patagonia",
+    category: "Écoresponsable",
+    color: "#0369a1", bg: "#e0f2fe",
+    initials: "PT",
+    score: 91,
+    grade: "A",
+    co2: "0.8", water: "620", chemicals: "Faible", recyclability: "88%",
+    bars: { matériaux: 92, production: 88, transport: 82, transparence: 95 },
+    certs: ["Fair Trade", "bluesign®", "B Corp", "GOTS"],
+    desc: "Patagonia est la référence mondiale de la mode durable. En 2022, le fondateur Yvon Chouinard a cédé l'entreprise à une fondation environnementale. La marque milite activement pour réduire la consommation, y compris la sienne.",
+    positives: ["Don de l'entreprise à une fondation climatique", "Programme Worn Wear de réparation/revente", "Matériaux recyclés ou biologiques à 87%", "Activisme environnemental (1% for the Planet)", "Transparence totale de la chaîne d'approvisionnement"],
+    negatives: ["Prix élevés limitant l'accessibilité", "Empreinte transport internationale"],
+    metrics_extra: { "% matières durables": "87%", "Dons enviro": "140M$+", "Emplois": "3 000", "CA (M$)": "1 500" }
+  },
+  {
+    id: 7,
+    name: "Pull&Bear",
+    category: "Fast Fashion",
+    color: "#b45309", bg: "#fef3c7",
+    initials: "PB",
+    score: 29,
+    grade: "E",
+    co2: "4.9", water: "2 900", chemicals: "Élevé", recyclability: "10%",
+    bars: { matériaux: 24, production: 28, transport: 36, transparence: 20 },
+    certs: [],
+    desc: "Pull&Bear, autre filiale d'Inditex, souffre des mêmes problèmes structurels que ses sœurs Bershka et Zara. Le modèle fast fashion ultra-rapide génère une empreinte environnementale considérable avec peu de contreparties durables.",
+    positives: ["Appartient à Inditex (engagements groupe)"],
+    negatives: ["Aucune ligne écoresponsable dédiée", "Faible recyclabilité des collections", "Forte utilisation de synthétiques", "Peu de certifications indépendantes"],
+    metrics_extra: { "Collections/an": "20+", "Boutiques": "950+", "Pays de prod.": "40+", "CA (Mds€)": "1.6" }
+  },
+  {
+    id: 8,
+    name: "Levi's",
+    category: "Premium",
+    color: "#1d4ed8", bg: "#dbeafe",
+    initials: "LV",
+    score: 62,
+    grade: "B",
+    co2: "1.9", water: "1 100", chemicals: "Modéré", recyclability: "55%",
+    bars: { matériaux: 68, production: 60, transport: 58, transparence: 66 },
+    certs: ["Better Cotton", "Fair Trade certified"],
+    desc: "Levi's a lancé WaterLess™, une technique de fabrication économisant jusqu'à 96% d'eau sur certains jeans. La marque s'engage sur le coton biologique et la transparence fournisseurs, avec des résultats mesurables et vérifiés.",
+    positives: ["Technologie WaterLess™ (-96% eau sur certains produits)", "Buy Better, Wear Longer (anti fast fashion)", "Objectif 100% coton durable d'ici 2025", "Programme SecondHand officiel"],
+    negatives: ["Production encore majoritairement en Asie", "Teintures chimiques toujours présentes", "Volume total reste élevé"],
+    metrics_extra: { "% coton durable": "83%", "WaterLess™ produits": "193M", "Emplois": "15 000", "CA (Mds$)": "6.2" }
+  },
+  {
+    id: 9,
+    name: "Veja",
+    category: "Écoresponsable",
+    color: "#065f46", bg: "#d1fae5",
+    initials: "VJ",
+    score: 86,
+    grade: "A",
+    co2: "0.9", water: "680", chemicals: "Faible", recyclability: "80%",
+    bars: { matériaux: 90, production: 84, transport: 78, transparence: 90 },
+    certs: ["Fair Trade", "GOTS", "B Corp"],
+    desc: "Veja est devenu la référence européenne de la basket éthique. Coton biologique du Brésil, caoutchouc naturel Amazonien, usines certifiées au Brésil… la marque française prouve que durabilité et désirabilité peuvent coexister.",
+    positives: ["Caoutchouc naturel d'Amazonie (vs synthétique)", "Coton biologique certifié Brésil/Pérou", "Usines propres certifiées au Brésil", "0 publicité (budget redirigé vers qualité)", "Transparence totale des prix de revient"],
+    negatives: ["Prix premium (moins accessible)", "Empreinte transport Brésil → Europe"],
+    metrics_extra: { "% matières bio": "70%", "Usines certifiées": "100%", "Emplois Brésil": "800+", "CA (M€)": "350+" }
+  },
+  {
+    id: 10,
+    name: "Uniqlo",
+    category: "Premium",
+    color: "#dc2626", bg: "#fee2e2",
+    initials: "UQ",
+    score: 49,
+    grade: "C",
+    co2: "2.9", water: "1 800", chemicals: "Modéré", recyclability: "36%",
+    bars: { matériaux: 52, production: 45, transport: 50, transparence: 48 },
+    certs: ["Better Cotton partiel", "Responsible Down Standard"],
+    desc: "Uniqlo (Fast Retailing) mise sur la durabilité de ses produits (LifeWear) plutôt que sur la fréquence d'achat. Les efforts existent (coton recycclé, programme RE.UNIQLO) mais la transparence reste insuffisante et les volumes considérables.",
+    positives: ["Programme RE.UNIQLO de collecte et recyclage", "Investissement dans la technologie textile durable", "Vêtements conçus pour durer (LifeWear)"],
+    negatives: ["Manque de transparence sur les fournisseurs tier 2-3", "Volume de production très élevé", "Peu de certifications tierces indépendantes"],
+    metrics_extra: { "Vêtements collectés/an": "50M+", "Boutiques": "2 400+", "Emplois": "56 000", "CA (Mds$)": "17.1" }
+  },
+  {
+    id: 11,
+    name: "Sézane",
+    category: "Premium",
+    color: "#9d174d", bg: "#fce7f3",
+    initials: "SZ",
+    score: 67,
+    grade: "B",
+    co2: "1.5", water: "950", chemicals: "Faible-Mod.", recyclability: "58%",
+    bars: { matériaux: 70, production: 65, transport: 62, transparence: 72 },
+    certs: ["GOTS partiel", "OEKO-TEX®", "B Corp en cours"],
+    desc: "Sézane, marque digitale française, s'engage pour des collections limitées, des matières de qualité et une production majoritairement en Europe. La marque publie un rapport impact détaillé et progresse chaque année vers ses objectifs.",
+    positives: ["Collections limitées anti-surproduction", "Production Europe (Italie, Portugal, France)", "Matières certifiées OEKO-TEX®", "Fonds Demain pour des projets sociaux", "Rapport d'impact annuel"],
+    negatives: ["Prix élevés", "Empreinte carbone transport encore présente", "B Corp non finalisé"],
+    metrics_extra: { "% prod. Europe": "68%", "Collections/an": "4", "Emplois": "600+", "CA (M€)": "300+" }
+  },
+  {
+    id: 12,
+    name: "The North Face",
+    category: "Sport",
+    color: "#15803d", bg: "#dcfce7",
+    initials: "NF",
+    score: 57,
+    grade: "C",
+    co2: "2.3", water: "1 500", chemicals: "Modéré", recyclability: "48%",
+    bars: { matériaux: 62, production: 52, transport: 55, transparence: 58 },
+    certs: ["bluesign®", "Responsible Down Standard", "Fair Trade certifié (partiel)"],
+    desc: "The North Face s'engage via son programme Renewed (vêtements remis à neuf) et l'utilisation croissante de matières recyclées. La marque milite pour la protection des espaces naturels tout en restant dépendante de la pétrochimie pour les performances techniques.",
+    positives: ["Programme TNF Renewed (reconditionné)", "Partenariats protection zones naturelles", "Duvet responsable certifié RDS", "Investissement matières recyclées"],
+    negatives: ["Dépendance aux matières synthétiques techniques", "Appartient à VF Corp (volume élevé)", "Transport international dominant"],
+    metrics_extra: { "% matières durables": "50%", "Renewed produits/an": "1M+", "Emplois VF Corp": "35 000", "CA (Mds$)": "3.7" }
+  }
+];
+
+let currentFilter = "all";
+
+function scoreColor(s) {
+  if (s >= 75) return "#16a34a";
+  if (s >= 50) return "#ca8a04";
+  return "#dc2626";
+}
+
+function barColor(v) {
+  if (v >= 65) return "#16a34a";
+  if (v >= 40) return "#f59e0b";
+  return "#ef4444";
+}
+
+function circumference(r) { return 2 * Math.PI * r; }
+
+function buildCard(b) {
+  const C = 157; // circumference for r=25
+  const offset = C - (b.score / 100) * C;
+  const color = scoreColor(b.score);
+  const barsHtml = Object.entries(b.bars).map(([k, v]) =>
+    `<div class="bar-row">
+      <span class="bar-label">${k.charAt(0).toUpperCase()+k.slice(1)}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${v}%;background:${barColor(v)}"></div></div>
+      <span class="bar-val" style="color:${barColor(v)}">${v}</span>
+    </div>`
+  ).join('');
+  const certsHtml = b.certs.length
+    ? b.certs.map(c => `<span class="certif-chip">${c}</span>`).join('')
+    : `<span class="certif-chip" style="color:#dc2626">Aucune certif.</span>`;
+
+  return `
+  <div class="brand-card" id="card-${b.id}" onclick="openModal(${b.id})">
+    <div class="card-top">
+      <div class="brand-identity">
+        <div class="brand-logo-circle" style="background:${b.bg};color:${b.color}">${b.initials}</div>
+        <div>
+          <div class="brand-name">${b.name}</div>
+          <div class="brand-category">${b.category}</div>
+        </div>
+      </div>
+      <div class="score-ring">
+        <svg viewBox="0 0 56 56">
+          <circle class="track" cx="28" cy="28" r="22" stroke-width="5" fill="none" stroke="#f3f4f6"/>
+          <circle class="fill" cx="28" cy="28" r="22" stroke-width="5" fill="none"
+            stroke="${color}" stroke-linecap="round"
+            stroke-dasharray="${circumference(22).toFixed(1)}"
+            stroke-dashoffset="${(circumference(22) - (b.score/100)*circumference(22)).toFixed(1)}"
+            transform="rotate(-90 28 28)"/>
+        </svg>
+        <div class="score-inner">
+          <span class="score-num" style="color:${color}">${b.score}</span>
+          <span class="score-sub">/100</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 1.5rem .8rem">
+      <span class="grade-badge ${b.grade}">Grade ${b.grade}</span>
+    </div>
+    <div class="card-metrics">
+      <div class="metric-cell"><div class="m-val">${b.co2} kg</div><div class="m-lbl">CO₂</div></div>
+      <div class="metric-cell"><div class="m-val">${b.water} L</div><div class="m-lbl">Eau</div></div>
+      <div class="metric-cell"><div class="m-val">${b.recyclability}</div><div class="m-lbl">Recyclable</div></div>
+    </div>
+    <div class="card-bars">${barsHtml}</div>
+    <div class="card-footer">
+      <div class="certifs">${certsHtml}</div>
+      <button class="detail-btn">Détail →</button>
+    </div>
+  </div>`;
+}
+
+function filterBrands() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const sort = document.getElementById('sort-select').value;
+  let list = BRANDS.filter(b => {
+    const matchCat = currentFilter === 'all' || b.category === currentFilter;
+    const matchQ = b.name.toLowerCase().includes(q) || b.category.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  if (sort === 'score-desc') list.sort((a,b) => b.score - a.score);
+  else if (sort === 'score-asc') list.sort((a,b) => a.score - b.score);
+  else if (sort === 'az') list.sort((a,b) => a.name.localeCompare(b.name));
+  else if (sort === 'za') list.sort((a,b) => b.name.localeCompare(a.name));
+
+  const grid = document.getElementById('brands-grid');
+  document.getElementById('results-count').textContent = `${list.length} marque${list.length>1?'s':''} trouvée${list.length>1?'s':''}`;
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><p>Aucune marque ne correspond à votre recherche.</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map(buildCard).join('');
+}
+
+function setFilter(el, cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  filterBrands();
+}
+
+function openModal(id) {
+  const b = BRANDS.find(x => x.id === id);
+  if (!b) return;
+  document.getElementById('modal-title').textContent = b.name;
+  const pos = b.positives.map(p => `<li>${p}</li>`).join('');
+  const neg = b.negatives.map(p => `<li class="bad">${p}</li>`).join('');
+  const extra = Object.entries(b.metrics_extra).map(([k,v]) =>
+    `<div class="modal-metric"><div class="mm-val">${v}</div><div class="mm-lbl">${k}</div></div>`
+  ).join('');
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-section">
+      <h3>Présentation</h3>
+      <p>${b.desc}</p>
+    </div>
+    <div class="modal-section">
+      <h3>Chiffres clés</h3>
+      <div class="modal-grid">${extra}</div>
+    </div>
+    <div class="modal-section">
+      <h3>Points forts & points faibles</h3>
+      <ul class="timeline">${pos}${neg}</ul>
+    </div>
+    <div class="modal-section">
+      <h3>Certifications</h3>
+      <p>${b.certs.length ? b.certs.join(' · ') : 'Aucune certification indépendante reconnue.'}</p>
+    </div>
+    <button class="modal-cta" onclick="window.location='index.html#scanner'">📷 Scanner un produit ${b.name}</button>
+  `;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+filterBrands();
+</script>
+</body>
+</html>
