@@ -106,18 +106,18 @@ let codeReader = null;
 let isCameraActive = false;
 
 // ==============================
-// NAVIGATION / HAMBURGER
+// INIT UNIQUE (un seul DOMContentLoaded)
 // ==============================
 document.addEventListener('DOMContentLoaded', () => {
+
+  // --- Hamburger menu ---
   const hamburger = document.getElementById('hamburger');
   if (hamburger) {
     hamburger.addEventListener('click', () => {
-      // Simple toggle mobile menu (can be expanded)
       const navLinks = document.querySelector('.nav-links');
-      const navCta = document.querySelector('.nav-cta');
       if (navLinks) {
         const isVisible = navLinks.style.display === 'flex';
-        navLinks.style.display = isVisible ? '' : 'flex';
+        navLinks.style.display = isVisible ? 'none' : 'flex';
         navLinks.style.flexDirection = 'column';
         navLinks.style.position = 'absolute';
         navLinks.style.top = '70px';
@@ -127,13 +127,64 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.style.padding = '20px 24px';
         navLinks.style.zIndex = '99';
         navLinks.style.borderBottom = '1px solid rgba(82,183,136,0.2)';
-        if (isVisible) {
-          navLinks.style.display = 'none';
-        }
       }
     });
   }
+
+  // --- Input : chiffres uniquement ---
+  const input = document.getElementById('barcode-input');
+  if (input) {
+    input.addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^\d]/g, '');
+    });
+  }
+
+  // --- QR Code pour l'onglet téléphone ---
+  initQRCode();
+
+  // --- Animations au scroll ---
+  initScrollAnimations();
+
+  // --- Expose les fonctions pour les onclick HTML ---
+  window.switchTab    = switchTab;
+  window.setExample   = setExample;
+  window.analyzeBarcode = analyzeBarcode;
+  window.resetScan    = resetScan;
+  window.shareResult  = shareResult;
+  window.startCamera  = startCamera;
+  window.stopCamera   = stopCamera;
 });
+
+// ==============================
+// QR CODE — CORRECTION BUG
+// Génère le QR code pointant vers
+// la page actuelle (fonctionne en
+// local ET en ligne)
+// ==============================
+function initQRCode() {
+  const qrContainer = document.getElementById('qrcode');
+  if (!qrContainer) return;
+
+  // Vide le conteneur au cas où
+  qrContainer.innerHTML = '';
+
+  // URL cible : la page courante (fonctionne partout)
+  const targetUrl = window.location.href.split('#')[0];
+
+  if (typeof QRCode === 'undefined') {
+    qrContainer.innerHTML = '<p style="color:#e07a5f;font-size:.85rem;">QR Code non disponible (lib non chargée)</p>';
+    return;
+  }
+
+  new QRCode(qrContainer, {
+    text: targetUrl,
+    width: 180,
+    height: 180,
+    colorDark: '#1a3c2b',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M,
+  });
+}
 
 // ==============================
 // TABS
@@ -146,12 +197,11 @@ function switchTab(tab) {
   document.getElementById('tab-' + tab).classList.add('active');
   document.getElementById('content-' + tab).classList.add('active');
 
-  // Stop camera if switching away
+  // Arrête la caméra si on quitte l'onglet caméra
   if (tab !== 'camera' && isCameraActive) {
     stopCamera();
   }
 
-  // Hide result/error/loading when switching tabs
   hideAllPanels();
 }
 
@@ -185,7 +235,6 @@ function analyzeBarcode(barcode) {
   hideAllPanels();
   showLoading();
 
-  // Simulation délai réseau
   setTimeout(() => {
     const product = productDatabase[code] || generateFakeProduct(code);
     hideLoading();
@@ -197,37 +246,28 @@ function analyzeBarcode(barcode) {
 // AFFICHAGE RÉSULTAT
 // ==============================
 function showResult(product, barcode) {
-  // Brand & name
   document.getElementById('result-brand').textContent = product.brand || '—';
   document.getElementById('result-name').textContent = product.name || '—';
   document.getElementById('result-barcode-tag').textContent = '📦 ' + barcode;
 
-  // Metrics
   document.getElementById('val-co2').textContent = product.co2 + ' kg';
   document.getElementById('val-water').textContent = Number(product.water).toLocaleString('fr-FR');
   document.getElementById('val-chemicals').textContent = product.chemicals;
   document.getElementById('val-recyclable').textContent = product.recyclable;
 
-  // Details
   document.getElementById('detail-materials').textContent = product.materials;
   document.getElementById('detail-production').textContent = product.production;
   document.getElementById('detail-transport').textContent = product.transport;
   document.getElementById('detail-certs').textContent = product.certifications;
 
-  // Tips
   const tipsList = document.getElementById('result-tips-list');
   tipsList.innerHTML = product.tips.map(tip => `<li>${tip}</li>`).join('');
 
-  // Score animation
   animateScore(product.score);
-
-  // Eco badge
   setEcoBadge(product.score);
 
-  // Show panel
   document.getElementById('result-panel').classList.remove('hidden');
 
-  // Scroll to result
   setTimeout(() => {
     document.getElementById('result-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 100);
@@ -236,9 +276,8 @@ function showResult(product, barcode) {
 function animateScore(score) {
   const circle = document.getElementById('score-circle');
   const numberEl = document.getElementById('score-number');
-  const circumference = 2 * Math.PI * 50; // r=50
+  const circumference = 2 * Math.PI * 50;
 
-  // Color based on score
   let color;
   if (score >= 75) color = '#2d6a4f';
   else if (score >= 50) color = '#52b788';
@@ -246,15 +285,9 @@ function animateScore(score) {
   else color = '#e07a5f';
 
   circle.style.stroke = color;
-
   const offset = circumference - (score / 100) * circumference;
+  requestAnimationFrame(() => { circle.style.strokeDashoffset = offset; });
 
-  // Trigger animation
-  requestAnimationFrame(() => {
-    circle.style.strokeDashoffset = offset;
-  });
-
-  // Number count-up
   let current = 0;
   const duration = 1200;
   const startTime = performance.now();
@@ -297,15 +330,11 @@ function resetScan() {
   const input = document.getElementById('barcode-input');
   if (input) input.value = '';
 
-  // Reset score ring
   const circle = document.getElementById('score-circle');
-  if (circle) {
-    circle.style.strokeDashoffset = '314';
-  }
+  if (circle) circle.style.strokeDashoffset = '314';
   const scoreNumber = document.getElementById('score-number');
   if (scoreNumber) scoreNumber.textContent = '0';
 
-  // Scroll back to scanner
   document.getElementById('scanner').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -331,7 +360,7 @@ function shareResult() {
 }
 
 // ==============================
-// TOAST NOTIFICATION
+// TOAST
 // ==============================
 function showToast(message) {
   const existing = document.getElementById('toast');
@@ -345,7 +374,7 @@ function showToast(message) {
     background: #1a3c2b; color: #fff; padding: 12px 24px;
     border-radius: 50px; font-size: 0.9rem; font-weight: 500;
     box-shadow: 0 8px 30px rgba(0,0,0,0.2); z-index: 9999;
-    animation: slideUp 0.3s ease; font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif;
   `;
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
@@ -376,90 +405,96 @@ function showError(message) {
 }
 
 // ==============================
-// CAMERA / SCAN
+// CAMÉRA — CORRECTION BUG
+// ZXing UMD expose l'objet sous
+// window.ZXing avec une API stable
 // ==============================
 async function startCamera() {
   const cameraPlaceholder = document.getElementById('camera-placeholder');
-  const btnStart = document.getElementById('btn-start-scan');
-  const btnStop = document.getElementById('btn-stop-scan');
-  const statusEl = document.getElementById('camera-status');
-  const camScanline = document.getElementById('cam-scanline');
-  const cameraTip = document.querySelector('.camera-tip');
+  const btnStart          = document.getElementById('btn-start-scan');
+  const btnStop           = document.getElementById('btn-stop-scan');
+  const statusEl          = document.getElementById('camera-status');
+  const camScanline       = document.getElementById('cam-scanline');
+  const cameraTip         = document.querySelector('.camera-tip');
 
-  // Check ZXing availability
-  if (typeof ZXing === 'undefined') {
-    showError('La bibliothèque de scan n\'est pas chargée. Vérifiez votre connexion internet.');
+  // Vérifie que ZXing est bien chargé (UMD expose window.ZXing)
+  if (typeof window.ZXing === 'undefined' || typeof window.ZXing.BrowserMultiFormatReader === 'undefined') {
+    showError('La bibliothèque de scan est introuvable. Vérifiez votre connexion internet et rechargez la page.');
+    return;
+  }
+
+  // Vérifie que le navigateur supporte getUserMedia
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showError('Votre navigateur ne supporte pas l\'accès à la caméra. Essayez Chrome ou Firefox.');
     return;
   }
 
   try {
-    // Request camera permission
     statusEl.textContent = 'Demande d\'accès à la caméra…';
 
+    // Demande d'accès à la caméra
     const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+      video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }
     });
 
     const video = document.getElementById('video-feed');
     video.srcObject = stream;
+    await video.play();
 
-    // Hide placeholder, show overlay
-    if (cameraPlaceholder) cameraPlaceholder.classList.add('hidden');
+    // UI : affiche le flux, masque le placeholder
+    if (cameraPlaceholder) cameraPlaceholder.style.display = 'none';
     if (camScanline) camScanline.style.display = 'block';
     if (cameraTip) cameraTip.style.display = 'block';
 
-    // Toggle buttons
     btnStart.classList.add('hidden');
     btnStop.classList.remove('hidden');
     isCameraActive = true;
     statusEl.textContent = '📷 Caméra active — pointez vers le code-barres';
 
-    // Init ZXing reader
-    codeReader = new ZXing.BrowserMultiFormatReader();
-    codeReader.decodeFromVideoDevice(null, 'video-feed', (result, err) => {
+    // Lance ZXing sur le flux vidéo
+    codeReader = new window.ZXing.BrowserMultiFormatReader();
+
+    codeReader.decodeFromStream(stream, video, (result, err) => {
       if (result) {
         const code = result.getText();
         statusEl.textContent = `✅ Code détecté : ${code}`;
         stopCamera();
-        // Switch to manual tab to show result cleanly
         switchTab('manual');
         document.getElementById('barcode-input').value = code;
         analyzeBarcode(code);
       }
-      // Ignore errors (no barcode in frame)
+      // Les erreurs "no barcode in frame" sont normales, on les ignore
     });
 
   } catch (err) {
     isCameraActive = false;
+    statusEl.textContent = '';
     if (err.name === 'NotAllowedError') {
-      statusEl.textContent = '';
       showError('Accès à la caméra refusé. Autorisez l\'accès dans les paramètres de votre navigateur.');
     } else if (err.name === 'NotFoundError') {
-      statusEl.textContent = '';
       showError('Aucune caméra détectée sur cet appareil.');
     } else {
-      statusEl.textContent = '';
       showError('Erreur caméra : ' + err.message);
     }
   }
 }
 
 function stopCamera() {
-  const video = document.getElementById('video-feed');
-  const btnStart = document.getElementById('btn-start-scan');
-  const btnStop = document.getElementById('btn-stop-scan');
+  const video           = document.getElementById('video-feed');
+  const btnStart        = document.getElementById('btn-start-scan');
+  const btnStop         = document.getElementById('btn-stop-scan');
   const cameraPlaceholder = document.getElementById('camera-placeholder');
-  const camScanline = document.getElementById('cam-scanline');
-  const cameraTip = document.querySelector('.camera-tip');
-  const statusEl = document.getElementById('camera-status');
+  const camScanline     = document.getElementById('cam-scanline');
+  const cameraTip       = document.querySelector('.camera-tip');
+  const statusEl        = document.getElementById('camera-status');
 
-  // Stop stream
+  // Arrête le flux vidéo
   if (video && video.srcObject) {
     video.srcObject.getTracks().forEach(track => track.stop());
     video.srcObject = null;
   }
 
-  // Stop ZXing
+  // Réinitialise ZXing
   if (codeReader) {
     try { codeReader.reset(); } catch (e) {}
     codeReader = null;
@@ -467,8 +502,8 @@ function stopCamera() {
 
   isCameraActive = false;
 
-  // Restore UI
-  if (cameraPlaceholder) cameraPlaceholder.classList.remove('hidden');
+  // Restaure l'UI
+  if (cameraPlaceholder) cameraPlaceholder.style.display = '';
   if (camScanline) camScanline.style.display = 'none';
   if (cameraTip) cameraTip.style.display = 'none';
   btnStart?.classList.remove('hidden');
@@ -477,17 +512,16 @@ function stopCamera() {
 }
 
 // ==============================
-// KEYBOARD SHORTCUTS
+// RACCOURCI CLAVIER — Entrée
 // ==============================
 document.addEventListener('keydown', (e) => {
-  // Enter key in barcode input
   if (e.key === 'Enter' && document.activeElement?.id === 'barcode-input') {
     analyzeBarcode();
   }
 });
 
 // ==============================
-// SCROLL ANIMATIONS
+// ANIMATIONS SCROLL
 // ==============================
 function initScrollAnimations() {
   const observer = new IntersectionObserver((entries) => {
@@ -508,28 +542,3 @@ function initScrollAnimations() {
     observer.observe(el);
   });
 }
-
-// ==============================
-// INIT
-// ==============================
-document.addEventListener('DOMContentLoaded', () => {
-  initScrollAnimations();
-
-  // Pre-fill example on load
-  const input = document.getElementById('barcode-input');
-  if (input) {
-    input.addEventListener('input', (e) => {
-      // Only allow digits
-      e.target.value = e.target.value.replace(/[^\d]/g, '');
-    });
-  }
-
-  // Expose functions to global scope for onclick handlers
-  window.switchTab = switchTab;
-  window.setExample = setExample;
-  window.analyzeBarcode = analyzeBarcode;
-  window.resetScan = resetScan;
-  window.shareResult = shareResult;
-  window.startCamera = startCamera;
-  window.stopCamera = stopCamera;
-});
