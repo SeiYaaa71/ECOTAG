@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoTag — Scan Éco-Responsable</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <div class="bg-shapes" aria-hidden="true">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="grain"></div>
+  </div>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="#" class="logo">
+        <span class="logo-icon">🌿</span>
+        <span class="logo-text">Eco<strong>Tag</strong></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#scanner">Scanner</a></li>
+        <li><a href="#comment-ca-marche">Comment ça marche</a></li>
+        <li><a href="#about">À propos</a></li>
+      </ul>
+      <button class="nav-cta" onclick="document.getElementById('scanner').scrollIntoView({behavior:'smooth'})">
+        Scanner maintenant
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-badge">🌍 Mode durable</span>
+      <h1 class="hero-title">
+        Connaissez l'impact<br/>
+        <em>écologique</em> de vos<br/>
+        vêtements
+      </h1>
+      <p class="hero-subtitle">
+        Scannez le code-barres d'un vêtement et obtenez instantanément son score éco-responsable, ses émissions CO₂ et bien plus encore.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('scanner').scrollIntoView({behavior:'smooth'})">
+          <span>📷</span> Scanner un vêtement
+        </button>
+        <button class="btn-secondary" onclick="document.getElementById('comment-ca-marche').scrollIntoView({behavior:'smooth'})">
+          En savoir plus
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">50k+</span>
+          <span class="stat-label">produits analysés</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">98%</span>
+          <span class="stat-label">précision</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">CO₂</span>
+          <span class="stat-label">mesuré</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone-mockup">
+        <div class="phone-screen">
+          <div class="scan-animation">
+            <div class="scan-frame">
+              <div class="scan-corner tl"></div>
+              <div class="scan-corner tr"></div>
+              <div class="scan-corner bl"></div>
+              <div class="scan-corner br"></div>
+              <div class="scan-line"></div>
+            </div>
+            <div class="scan-label">Pointez vers le code-barres</div>
+          </div>
+        </div>
+      </div>
+      <div class="floating-card card-co2">
+        <span class="card-icon">💨</span>
+        <div>
+          <div class="card-value">2.4 kg CO₂</div>
+          <div class="card-desc">émissions totales</div>
+        </div>
+      </div>
+      <div class="floating-card card-score">
+        <span class="card-icon">🏆</span>
+        <div>
+          <div class="card-value">Score 78/100</div>
+          <div class="card-desc">Bon produit</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scanner-section" id="scanner">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Analyse</span>
+        <h2 class="section-title">Scanner un vêtement</h2>
+        <p class="section-subtitle">Choisissez votre méthode : saisie manuelle, caméra PC ou scan depuis votre téléphone.</p>
+      </div>
+
+      <div class="scanner-card">
+        <div class="tabs">
+          <button class="tab active" id="tab-manual" onclick="switchTab('manual')">✏️ Saisie manuelle</button>
+          <button class="tab" id="tab-camera" onclick="switchTab('camera')">💻 Caméra PC</button>
+          <button class="tab" id="tab-phone" onclick="switchTab('phone')">📱 Via téléphone</button>
+        </div>
+
+        <!-- Saisie manuelle -->
+        <div class="tab-content active" id="content-manual">
+          <div class="input-group">
+            <label for="barcode-input">Code-barres du vêtement</label>
+            <div class="input-row">
+              <input type="text" id="barcode-input" placeholder="Ex : 3614273319645"
+                maxlength="20" autocomplete="off" inputmode="numeric"/>
+              <button class="btn-scan" onclick="analyzeBarcode()">Analyser</button>
+            </div>
+            <span class="input-hint">Saisissez le code EAN-13 ou UPC-A présent sur l'étiquette</span>
+          </div>
+          <div class="examples">
+            <span class="examples-label">Exemples :</span>
+            <button class="example-chip" onclick="setExample('3614273319645')">3614273319645</button>
+            <button class="example-chip" onclick="setExample('5000193009888')">5000193009888</button>
+            <button class="example-chip" onclick="setExample('8710447282335')">8710447282335</button>
+          </div>
+        </div>
+
+        <!-- Caméra PC -->
+        <div class="tab-content" id="content-camera">
+          <div class="camera-area">
+            <div class="camera-preview">
+              <video id="video-feed" autoplay playsinline muted></video>
+              <div class="camera-overlay">
+                <div class="camera-frame">
+                  <div class="cam-corner tl"></div>
+                  <div class="cam-corner tr"></div>
+                  <div class="cam-corner bl"></div>
+                  <div class="cam-corner br"></div>
+                  <div class="cam-scanline" id="cam-scanline"></div>
+                </div>
+                <p class="camera-tip" id="camera-tip">Centrez le code-barres dans le cadre</p>
+              </div>
+              <div class="camera-placeholder" id="camera-placeholder">
+                <div class="cam-icon">💻</div>
+                <p>Caméra PC / Webcam</p>
+                <small>Autorisation requise</small>
+              </div>
+            </div>
+            <div class="camera-controls">
+              <button class="btn-primary" id="btn-start-scan" onclick="startCamera()">
+                <span>📷</span> Activer la caméra
+              </button>
+              <button class="btn-secondary hidden" id="btn-stop-scan" onclick="stopCamera()">
+                ⏹ Arrêter
+              </button>
+            </div>
+            <div id="camera-status" class="camera-status"></div>
+          </div>
+        </div>
+
+        <!-- Via téléphone -->
+        <div class="tab-content" id="content-phone">
+          <div class="phone-tab-intro">
+            <p>Scannez ce QR code avec votre téléphone pour ouvrir EcoTag directement sur votre mobile et utiliser l'appareil photo de votre smartphone.</p>
+          </div>
+          <div class="qr-block">
+            <div class="qr-wrapper">
+              <div id="qrcode"></div>
+            </div>
+            <div class="qr-info">
+              <p class="qr-main">👆 Pointez l'appareil photo de votre téléphone vers ce QR code</p>
+              <p class="qr-strong">→ EcoTag s'ouvrira sur votre mobile</p>
+              <p class="qr-small">Vous pourrez scanner vos vêtements directement en magasin</p>
+            </div>
+          </div>
+          <div class="phone-steps">
+            <p class="phone-steps-title">📱 Sur votre téléphone :</p>
+            <ol>
+              <li>Ouvrez l'appareil photo natif</li>
+              <li>Pointez vers le QR code ci-dessus</li>
+              <li>Cliquez sur le lien qui s'affiche</li>
+              <li>Scannez votre vêtement en magasin !</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- RÉSULTAT -->
+      <div class="result-panel hidden" id="result-panel">
+        <div class="result-header">
+          <div class="result-product-info">
+            <div class="result-brand" id="result-brand">—</div>
+            <div class="result-name" id="result-name">—</div>
+            <div class="result-barcode-tag" id="result-barcode-tag">—</div>
+          </div>
+          <div class="result-score-ring">
+            <svg class="score-svg" viewBox="0 0 120 120">
+              <circle class="score-track" cx="60" cy="60" r="50"/>
+              <circle class="score-fill" id="score-circle" cx="60" cy="60" r="50"
+                stroke-dasharray="314" stroke-dashoffset="314"/>
+            </svg>
+            <div class="score-text">
+              <span class="score-number" id="score-number">0</span>
+              <span class="score-label">/100</span>
+            </div>
+          </div>
+        </div>
+        <div class="result-badge-row">
+          <span class="eco-badge" id="eco-badge">—</span>
+        </div>
+        <div class="result-metrics">
+          <div class="metric-card">
+            <div class="metric-icon">💨</div>
+            <div class="metric-value" id="val-co2">—</div>
+            <div class="metric-label">kg CO₂ émis</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">💧</div>
+            <div class="metric-value" id="val-water">—</div>
+            <div class="metric-label">litres d'eau</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">🧪</div>
+            <div class="metric-value" id="val-chemicals">—</div>
+            <div class="metric-label">produits chimiques</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">♻️</div>
+            <div class="metric-value" id="val-recyclable">—</div>
+            <div class="metric-label">recyclabilité</div>
+          </div>
+        </div>
+        <div class="result-details-grid">
+          <div class="detail-block"><h4>🧵 Matériaux</h4><p id="detail-materials">—</p></div>
+          <div class="detail-block"><h4>🏭 Production</h4><p id="detail-production">—</p></div>
+          <div class="detail-block"><h4>🚢 Transport</h4><p id="detail-transport">—</p></div>
+          <div class="detail-block"><h4>📋 Certifications</h4><p id="detail-certs">—</p></div>
+        </div>
+        <div class="result-tips">
+          <h4>💡 Conseils durables</h4>
+          <ul id="result-tips-list"></ul>
+        </div>
+        <div class="result-actions">
+          <button class="btn-primary" onclick="resetScan()">Scanner un autre produit</button>
+          <button class="btn-secondary" onclick="shareResult()">Partager le résultat</button>
+        </div>
+      </div>
+
+      <!-- CHARGEMENT -->
+      <div class="loading-panel hidden" id="loading-panel">
+        <div class="loading-spinner"><div class="leaf-spinner">🌿</div></div>
+        <p class="loading-text">Analyse en cours…</p>
+        <p class="loading-sub">Calcul des émissions CO₂, consommation d'eau et score éco</p>
+      </div>
+
+      <!-- ERREUR -->
+      <div class="error-panel hidden" id="error-panel">
+        <div class="error-icon">⚠️</div>
+        <p class="error-text" id="error-text">Produit non trouvé</p>
+        <button class="btn-secondary" onclick="resetScan()">Réessayer</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-section" id="comment-ca-marche">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Processus</span>
+        <h2 class="section-title">Comment ça marche ?</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-icon">📷</div>
+          <h3>Scannez</h3>
+          <p>Caméra PC, QR code téléphone, ou saisie manuelle depuis l'étiquette du vêtement.</p>
+        </div>
+        <div class="step-connector">→</div>
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-icon">🔍</div>
+          <h3>Analysez</h3>
+          <p>Notre base analyse matériaux, production, transport et produits chimiques utilisés.</p>
+        </div>
+        <div class="step-connector">→</div>
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-icon">🌱</div>
+          <h3>Décidez</h3>
+          <p>Score sur 100 et données détaillées pour des achats éco-responsables éclairés.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section" id="about">
+    <div class="container about-grid">
+      <div class="about-text">
+        <span class="section-tag">Notre mission</span>
+        <h2 class="section-title">La transparence<br/><em>au service</em> de la planète</h2>
+        <p>L'industrie textile est responsable de <strong>10% des émissions mondiales de CO₂</strong>. EcoTag vous donne les outils pour choisir avec conscience.</p>
+        <p>Nous analysons chaque produit selon plus de <strong>20 critères environnementaux</strong> : émissions carbone, eau, produits chimiques, conditions de fabrication et recyclabilité.</p>
+        <div class="about-badges">
+          <span class="about-badge">🌱 100% indépendant</span>
+          <span class="about-badge">🔬 Données vérifiées</span>
+          <span class="about-badge">🌍 Open Data</span>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-circle">
+          <div class="circle-inner">
+            <span class="circle-emoji">🌍</span>
+            <span class="circle-text">Mode<br/>Durable</span>
+          </div>
+        </div>
+        <div class="about-fact fact-1"><strong>2 700 L</strong><span>d'eau pour un t-shirt</span></div>
+        <div class="about-fact fact-2"><strong>10%</strong><span>des émissions CO₂ mondiales</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <span class="logo-icon">🌿</span>
+          <span class="logo-text">Eco<strong>Tag</strong></span>
+        </a>
+        <p>Faites des choix éclairés pour une mode plus durable.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#scanner">Scanner</a></li>
+          <li><a href="#comment-ca-marche">Comment ça marche</a></li>
+          <li><a href="#about">À propos</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#">Mentions légales</a></li>
+          <li><a href="#">Politique de confidentialité</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 EcoTag — Pour une mode éco-responsable 🌿</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
