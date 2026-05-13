@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Sondages — EcoTag</title>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- BACKGROUND -->
+  <div class="bg-shapes" aria-hidden="true">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="grain"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <nav class="nav">
+
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🌿</span>
+        <span class="logo-text">
+          Eco<strong>Tag</strong>
+        </span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#scanner">Scanner</a></li>
+        <li><a href="index.html#comment-ca-marche">Comment ça marche</a></li>
+        <li><a href="index.html#about">À propos</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="mentions-legales.html">Mentions légales</a></li>
+      </ul>
+
+    </nav>
+
+  </header>
+
+  <!-- PAGE -->
+  <section class="survey-page">
+
+    <div class="container">
+
+      <!-- TITRE -->
+      <div class="section-header">
+
+        <span class="section-tag">
+          Communauté
+        </span>
+
+        <h1 class="section-title">
+          Sondages utilisateurs
+        </h1>
+
+        <p class="section-subtitle">
+          Ces sondages fictifs nous aident à imaginer les futures améliorations de la plateforme EcoTag.
+        </p>
+
+      </div>
+
+      <!-- GRID -->
+      <div class="survey-grid">
+
+        <!-- SONDAGE 1 -->
+        <div class="survey-card">
+
+          <h3>📷 Le scan caméra est-il utile ?</h3>
+
+          <div class="survey-result">
+            <div
+              class="survey-bar"
+              id="bar-1"
+              style="width:88%">
+            </div>
+          </div>
+
+          <p class="survey-score">
+            Score actuel :
+            <strong id="score-1">88</strong>%
+          </p>
+
+          <div class="survey-actions">
+
+            <button
+              class="btn-primary"
+              data-survey="1"
+              onclick="voteSurvey(1, true)">
+              Oui
+            </button>
+
+            <button
+              class="btn-secondary"
+              data-survey="1"
+              onclick="voteSurvey(1, false)">
+              Non
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- SONDAGE 2 -->
+        <div class="survey-card">
+
+          <h3>🌱 Souhaitez-vous plus de données écologiques ?</h3>
+
+          <div class="survey-result">
+            <div
+              class="survey-bar"
+              id="bar-2"
+              style="width:93%">
+            </div>
+          </div>
+
+          <p class="survey-score">
+            Score actuel :
+            <strong id="score-2">93</strong>%
+          </p>
+
+          <div class="survey-actions">
+
+            <button
+              class="btn-primary"
+              data-survey="2"
+              onclick="voteSurvey(2, true)">
+              Oui
+            </button>
+
+            <button
+              class="btn-secondary"
+              data-survey="2"
+              onclick="voteSurvey(2, false)">
+              Non
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- SONDAGE 3 -->
+        <div class="survey-card">
+
+          <h3>📱 Une application mobile vous intéresserait-elle ?</h3>
+
+          <div class="survey-result">
+            <div
+              class="survey-bar"
+              id="bar-3"
+              style="width:79%">
+            </div>
+          </div>
+
+          <p class="survey-score">
+            Score actuel :
+            <strong id="score-3">79</strong>%
+          </p>
+
+          <div class="survey-actions">
+
+            <button
+              class="btn-primary"
+              data-survey="3"
+              onclick="voteSurvey(3, true)">
+              Oui
+            </button>
+
+            <button
+              class="btn-secondary"
+              data-survey="3"
+              onclick="voteSurvey(3, false)">
+              Non
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- REMARQUES -->
+      <div class="feedback-section">
+
+        <div class="survey-card">
+
+          <h3>💬 Vos remarques</h3>
+
+          <p class="feedback-text">
+            Une idée, une suggestion ou une amélioration pour EcoTag ?
+            Laissez-nous votre avis.
+          </p>
+
+          <textarea
+            id="feedback-message"
+            class="feedback-textarea"
+            placeholder="Écrivez votre remarque ici..."></textarea>
+
+          <button
+            class="btn-primary feedback-btn"
+            onclick="submitFeedback()">
+            Envoyer la remarque
+          </button>
+
+          <p
+            id="feedback-success"
+            class="feedback-success hidden">
+            ✅ Merci pour votre remarque !
+          </p>
+
+        </div>
+
+      </div>
+
+      <!-- RETOUR -->
+      <div class="survey-back">
+
+        <a href="index.html" class="btn-primary">
+          ← Retour à l’accueil
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+
+    <div class="container footer-grid">
+
+      <div class="footer-brand">
+
+        <a href="index.html" class="logo">
+          <span class="logo-icon">🌿</span>
+          <span class="logo-text">
+            Eco<strong>Tag</strong>
+          </span>
+        </a>
+
+        <p>
+          Faites des choix éclairés pour une mode plus durable.
+        </p>
+
+      </div>
+
+      <div class="footer-links">
+
+        <h4>Navigation</h4>
+
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+        </ul>
+
+      </div>
+
+      <div class="footer-links">
+
+        <h4>Communauté</h4>
+
+        <ul>
+          <li><a href="sondages.html">Sondages</a></li>
+        </ul>
+
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 EcoTag — Tous droits réservés.
+    </div>
+
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+
+    // Empêche plusieurs votes
+    const votedSurveys = {};
+
+    function voteSurvey(id, positive) {
+
+      if (votedSurveys[id]) {
+
+        alert("Vous avez déjà voté pour ce sondage.");
+        return;
+      }
+
+      const scoreElement =
+        document.getElementById(`score-${id}`);
+
+      const barElement =
+        document.getElementById(`bar-${id}`);
+
+      const buttons =
+        document.querySelectorAll(`[data-survey="${id}"]`);
+
+      let currentScore =
+        parseInt(scoreElement.textContent);
+
+      // Vote
+      if (positive) {
+        currentScore += 2;
+      } else {
+        currentScore -= 2;
+      }
+
+      // Limites
+      if (currentScore > 100) {
+        currentScore = 100;
+      }
+
+      if (currentScore < 0) {
+        currentScore = 0;
+      }
+
+      // Mise à jour UI
+      scoreElement.textContent = currentScore;
+
+      barElement.style.width =
+        currentScore + '%';
+
+      barElement.style.transition =
+        'width 0.4s ease';
+
+      // Désactivation des boutons
+      buttons.forEach(button => {
+
+        button.disabled = true;
+
+        button.style.opacity = '0.6';
+
+        button.style.cursor = 'not-allowed';
+      });
+
+      // Sauvegarde vote
+      votedSurveys[id] = true;
+    }
+
+    // Remarques
+    function submitFeedback() {
+
+      const textarea =
+        document.getElementById('feedback-message');
+
+      const success =
+        document.getElementById('feedback-success');
+
+      const message =
+        textarea.value.trim();
+
+      if (message === '') {
+
+        alert('Veuillez écrire une remarque.');
+        return;
+      }
+
+      success.classList.remove('hidden');
+
+      textarea.value = '';
+
+      setTimeout(() => {
+
+        success.classList.add('hidden');
+
+      }, 4000);
+    }
+
+  </script>
+
+</body>
+
+</html>
