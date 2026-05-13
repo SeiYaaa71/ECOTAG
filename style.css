@@ -97,7 +97,7 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
 }
 .logo-image {
   height: 48px;
-  width: auto;
+  width: 100%;
   display: block;
   object-fit: contain;
 }
