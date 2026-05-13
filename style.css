@@ -564,3 +564,45 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
   margin-top: 20px;
   display: inline-flex;
 }
+
+.feedback-section {
+  margin-top: 50px;
+}
+
+.feedback-text {
+  color: var(--text-mid);
+  margin-bottom: 18px;
+  line-height: 1.6;
+}
+
+.feedback-textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 18px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--cream-dark);
+  background: var(--cream);
+  resize: vertical;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  margin-bottom: 18px;
+  transition: all var(--transition);
+}
+
+.feedback-textarea:focus {
+  outline: none;
+  border-color: var(--green-light);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(82,183,136,0.15);
+}
+
+.feedback-btn {
+  margin-bottom: 12px;
+}
+
+.feedback-success {
+  color: var(--green-mid);
+  font-weight: 600;
+  margin-top: 10px;
+}
