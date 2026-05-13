@@ -7,67 +7,29 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+    /* ── Variables spécifiques à cette page ── */
     :root {
       --green-50:  #f0faf4;
       --green-100: #d4f0df;
-      --green-400: #4ade80;
       --green-600: #16a34a;
       --green-700: #15803d;
       --green-800: #166534;
-      --green-900: #14532d;
-      --amber-400: #fbbf24;
-      --amber-600: #d97706;
       --red-400:   #f87171;
-      --red-600:   #dc2626;
       --gray-50:   #f9fafb;
       --gray-100:  #f3f4f6;
       --gray-200:  #e5e7eb;
       --gray-400:  #9ca3af;
       --gray-600:  #4b5563;
-      --gray-800:  #1f2937;
-      --bg: #fafaf8;
       --text: #1a1a18;
       --text-muted: #5a5a56;
       --radius-md: 10px;
-      --radius-lg: 16px;
       --radius-xl: 24px;
     }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    /* ── NAV ── */
-    .header {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(250,250,248,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--gray-200);
-    }
-    .nav {
-      max-width: 1200px; margin: 0 auto;
-      padding: 0 2rem;
-      height: 68px;
-      display: flex; align-items: center; justify-content: space-between; gap: 2rem;
-    }
-    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); font-weight: 600; font-size: 1.15rem; }
-    .logo strong { color: var(--green-700); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.9rem; transition: color .2s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--green-700); }
-    .nav-cta {
-      background: var(--green-700); color: #fff;
-      border: none; border-radius: var(--radius-md);
-      padding: 0.5rem 1.2rem; font-size: 0.875rem; font-family: inherit; font-weight: 500;
-      cursor: pointer; transition: background .2s;
-    }
-    .nav-cta:hover { background: var(--green-800); }
+    /* Lien actif dans la nav */
+    .nav-links a.active { color: var(--green-700); }
 
     /* ── PAGE HEADER ── */
     .page-hero {
@@ -158,11 +120,6 @@
       display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
     }
     .brand-identity { display: flex; align-items: center; gap: 12px; }
-    .brand-logo-circle {
-      width: 48px; height: 48px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem; font-weight: 700; flex-shrink: 0;
-    }
     .brand-name { font-size: 1.05rem; font-weight: 600; }
     .brand-category { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
 
@@ -291,12 +248,7 @@
     }
     .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
 
-    /* ── FOOTER ── */
-    .footer { background: #fff; border-top: 1px solid var(--gray-200); padding: 2rem; text-align: center; }
-    .footer p { font-size: 0.83rem; color: var(--text-muted); }
-
     @media (max-width: 640px) {
-      .nav-links, .nav-cta { display: none; }
       .brands-grid { grid-template-columns: 1fr; }
       .modal-grid { grid-template-columns: 1fr; }
     }
@@ -355,7 +307,33 @@
 
 <!-- ── FOOTER ── -->
 <footer class="footer">
-  <p>© 2025 EcoTag — Pour une mode éco-responsable 🌿</p>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="logo">
+        <img src="assets/logo-clair.png" alt="EcoTag" class="logo-image">
+      </a>
+      <p>Faites des choix éclairés pour une mode plus durable.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html#scanner">Scanner</a></li>
+        <li><a href="index.html#comment-ca-marche">Comment ça marche</a></li>
+        <li><a href="index.html#about">À propos</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Légal</h4>
+      <ul>
+        <li><a href="mentions-legales.html">Mentions légales</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="sondages.html">Sondages</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 EcoTag — Tous droits réservés.
+  </div>
 </footer>
 
 <!-- ── MODAL ── -->
