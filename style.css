@@ -95,6 +95,12 @@ button { cursor: pointer; border: none; background: none; font-family: var(--fon
   font-family: var(--font-display); font-size: 1.5rem;
   font-weight: 400; color: var(--green-deep); letter-spacing: -0.02em;
 }
+.logo-image {
+  height: 48px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
 .logo-icon { font-size: 1.4rem; }
 .logo-text strong { color: var(--green-light); }
 .nav-links { display: flex; gap: 32px; margin-left: auto; }
